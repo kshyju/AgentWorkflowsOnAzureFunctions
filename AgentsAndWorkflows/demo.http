@@ -9,3 +9,15 @@ POST http://localhost:7071/api/workflows/Translate/run
 Content-Type: text/plain
 
 hello world
+
+### Run the TranslateAndReverse workflow (reuses the TranslateText executor)
+POST http://localhost:7071/api/workflows/TranslateAndReverse/run
+Content-Type: text/plain
+
+hello world
+
+### Run the Summarize workflow (uses the AI agent as a workflow step)
+POST http://localhost:7071/api/workflows/Summarize/run
+Content-Type: text/plain
+
+The speed of light in vacuum is approximately 299,792,458 meters per second. It is denoted by the letter c and is a fundamental physical constant. Einstein's theory of special relativity established that nothing can travel faster than light. This speed limit has profound implications for our understanding of space, time, and causality.

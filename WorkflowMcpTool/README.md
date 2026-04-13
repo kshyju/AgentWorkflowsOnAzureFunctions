@@ -28,7 +28,7 @@ The sample creates two workflows exposed as MCP tools:
 
 ## Environment Setup
 
-See the [README.md](../../README.md) file in the parent directory for complete setup instructions, including:
+See the [README.md](../README.MD) file in the parent directory for complete setup instructions, including:
 
 - Prerequisites installation
 - Durable Task Scheduler setup
@@ -41,7 +41,7 @@ For this sample, you'll also need [Node.js](https://nodejs.org/en/download) to u
 1. **Start the Function App**:
 
    ```bash
-   cd dotnet/samples/04-hosting/DurableWorkflows/AzureFunctions/04_WorkflowMcpTool
+   cd WorkflowMcpTool
    func start
    ```
 

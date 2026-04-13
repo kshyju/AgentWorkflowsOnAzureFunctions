@@ -26,4 +26,17 @@ internal sealed class FormatOutput() : Executor<TranslationResult, string>("Form
     }
 }
 
+internal sealed class ReverseText() : Executor<TranslationResult, string>("ReverseText")
+{
+    public override ValueTask<string> HandleAsync(
+        TranslationResult message,
+        IWorkflowContext context,
+        CancellationToken cancellationToken = default)
+    {
+        string reversed = new(message.Translated.Reverse().ToArray());
+        Console.WriteLine($"[Activity] ReverseText: '{message.Translated}' => '{reversed}'");
+        return ValueTask.FromResult(reversed);
+    }
+}
+
 internal sealed record TranslationResult(string Original, string Translated);

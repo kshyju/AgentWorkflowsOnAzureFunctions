@@ -9,7 +9,7 @@ Sample projects demonstrating how to host [Microsoft Agent Framework](https://gi
 | [SequentialWorkflow](./SequentialWorkflow) | A simple three-step pipeline: look up an order, cancel it, and send a confirmation email. |
 | [FanInFanout](./FanInFanout) | Parallel execution — a physics expert and chemistry expert answer the same question concurrently, then an aggregator combines their responses. Requires Azure OpenAI. |
 | [HumanInTheLoop](./HumanInTheLoop) | Expense reimbursement with three approval gates — manager approval followed by parallel budget and compliance approvals using `RequestPort`. |
-| [AgentsAndWorkflows](./AgentsAndWorkflows) | Register a standalone AI agent and a workflow in a single Functions app using `ConfigureDurableOptions`, both exposed as MCP tools. Requires Azure OpenAI. |
+| [AgentsAndWorkflows](./AgentsAndWorkflows) | Combines AI agents and workflows — reuses the same executor across multiple workflows, uses an AI agent as a workflow step, and registers everything via `ConfigureDurableOptions`. Requires Azure OpenAI. |
 | [WorkflowMcpTool](./WorkflowMcpTool) | Expose durable workflows as [MCP](https://modelcontextprotocol.io/) tools — two workflows (Translate and OrderLookup) are callable via the MCP Inspector or any MCP-compatible client. |
 
 ## Prerequisites

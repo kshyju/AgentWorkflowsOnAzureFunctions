@@ -1,7 +1,7 @@
-// This sample demonstrates how to register both standalone AI agents and workflows
-// in a single Azure Functions app using ConfigureDurableOptions. The AI agent is
-// exposed as both an HTTP endpoint and an MCP tool, while the workflow is exposed
-// only as an MCP tool.
+// This sample demonstrates:
+// 1. Registering both standalone AI agents and workflows in a single Functions app
+// 2. Reusing the same executor (TranslateText) across multiple workflows
+// 3. Using an AI agent as an executor step inside a workflow
 
 using Azure;
 using Azure.AI.OpenAI;
@@ -26,7 +26,7 @@ AzureOpenAIClient openAiClient = !string.IsNullOrEmpty(azureOpenAiKey)
     : new AzureOpenAIClient(new Uri(endpoint), new AzureCliCredential());
 ChatClient chatClient = openAiClient.GetChatClient(deploymentName);
 
-// Define a standalone AI agent
+// Define a standalone AI agent (also used as an executor in the Summarize workflow)
 AIAgent assistant = chatClient.AsAIAgent(
     "You are a helpful assistant. Answer questions clearly and concisely.",
     "Assistant",
@@ -35,15 +35,29 @@ AIAgent assistant = chatClient.AsAIAgent(
 // Define workflow executors
 TranslateText translateText = new();
 FormatOutput formatOutput = new();
+ReverseText reverseText = new();
 
-// Build the Translate workflow: TranslateText -> FormatOutput
+// Workflow 1: Translate — TranslateText -> FormatOutput
 Workflow translateWorkflow = new WorkflowBuilder(translateText)
     .WithName("Translate")
     .WithDescription("Translate text to uppercase and format the result")
     .AddEdge(translateText, formatOutput)
     .Build();
 
-// Register both the AI agent and the workflow using ConfigureDurableOptions
+// Workflow 2: TranslateAndReverse — reuses TranslateText, then reverses the result
+Workflow translateAndReverseWorkflow = new WorkflowBuilder(translateText)
+    .WithName("TranslateAndReverse")
+    .WithDescription("Translate text to uppercase and reverse it")
+    .AddEdge(translateText, reverseText)
+    .Build();
+
+// Workflow 3: Summarize — uses the AI agent as an executor step
+Workflow summarizeWorkflow = new WorkflowBuilder(assistant)
+    .WithName("Summarize")
+    .WithDescription("Summarize the given text using an AI assistant")
+    .Build();
+
+// Register both the standalone AI agent and all workflows
 using IHost app = FunctionsApplication
     .CreateBuilder(args)
     .ConfigureFunctionsWebApplication()
@@ -51,7 +65,12 @@ using IHost app = FunctionsApplication
     {
         options.Agents.AddAIAgent(assistant,
             enableHttpTrigger: true, enableMcpToolTrigger: true);
+
         options.Workflows.AddWorkflow(translateWorkflow,
+            exposeStatusEndpoint: false, exposeMcpToolTrigger: true);
+        options.Workflows.AddWorkflow(translateAndReverseWorkflow,
+            exposeStatusEndpoint: false, exposeMcpToolTrigger: true);
+        options.Workflows.AddWorkflow(summarizeWorkflow,
             exposeStatusEndpoint: false, exposeMcpToolTrigger: true);
     })
     .Build();
