@@ -1,0 +1,11 @@
+### Chat with the Assistant AI agent
+POST http://localhost:7071/api/agents/Assistant/run
+Content-Type: text/plain
+
+What is the speed of light?
+
+### Run the Translate workflow
+POST http://localhost:7071/api/workflows/Translate/run
+Content-Type: text/plain
+
+hello world
