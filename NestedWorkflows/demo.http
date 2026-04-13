@@ -1,0 +1,5 @@
+### Start the TextPipeline workflow
+POST http://localhost:7071/api/workflows/TextPipeline/run
+Content-Type: text/plain
+
+hello

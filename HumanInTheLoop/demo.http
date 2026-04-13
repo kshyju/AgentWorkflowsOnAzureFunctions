@@ -1,0 +1,28 @@
+@runId = YOUR_RUN_ID
+
+### Start the ExpenseReimbursement workflow
+POST http://localhost:7071/api/workflows/ExpenseReimbursement/run
+Content-Type: text/plain
+
+EXP-2025-042
+
+### Check workflow status and pending approvals
+GET http://localhost:7071/api/workflows/ExpenseReimbursement/status/{{runId}}
+
+### Submit manager approval
+POST http://localhost:7071/api/workflows/ExpenseReimbursement/respond/{{runId}}
+Content-Type: application/json
+
+{"eventName": "ManagerApproval", "response": {"approved": true, "comments": "Looks good"}}
+
+### Submit budget approval
+POST http://localhost:7071/api/workflows/ExpenseReimbursement/respond/{{runId}}
+Content-Type: application/json
+
+{"eventName": "BudgetApproval", "response": {"approved": true, "comments": "Within budget"}}
+
+### Submit compliance approval
+POST http://localhost:7071/api/workflows/ExpenseReimbursement/respond/{{runId}}
+Content-Type: application/json
+
+{"eventName": "ComplianceApproval", "response": {"approved": true, "comments": "Compliant"}}

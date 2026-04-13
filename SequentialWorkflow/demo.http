@@ -1,0 +1,5 @@
+### Start the CancelOrder workflow
+POST http://localhost:7071/api/workflows/CancelOrder/run
+Content-Type: text/plain
+
+12345
